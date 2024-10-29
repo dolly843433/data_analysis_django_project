@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Results</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Analysis Results</h1>
+
+    <h2>Demographic Distribution</h2>
+    <canvas id="demographicsChart" width="400" height="200"></canvas>
+
+    <h2>Temporal Distribution</h2>
+    <canvas id="temporalChart" width="400" height="200"></canvas>
+
+    <script>
+        // Prepare data for the demographics chart
+        const demographicsData = {{ demographics_data|safe }};
+        const demographicsLabels = demographicsData.map(item => item.value);
+        const demographicsCounts = demographicsData.map(item => item.count);
+
+        const demographicsChart = new Chart(document.getElementById('demographicsChart'), {
+            type: 'bar',
+            data: {
+                labels: demographicsLabels,
+                datasets: [{
+                    label: 'Count',
+                    data: demographicsCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Prepare data for the temporal chart
+        const temporalData = {{ temporal_data|safe }};
+        const temporalLabels = temporalData.map(item => item.year);
+        const temporalCounts = temporalData.map(item => item.count);
+
+        const temporalChart = new Chart(document.getElementById('temporalChart'), {
+            type: 'line',
+            data: {
+                labels: temporalLabels,
+                datasets: [{
+                    label: 'Yearly Counts',
+                    data: temporalCounts,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
